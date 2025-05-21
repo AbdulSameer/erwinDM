@@ -1,0 +1,339 @@
+version : 2
+models:
+  - name: EMP
+    description: EMPLOYEE is a person that works for the VIDEO STORE
+    columns:
+      - name: EMP_first_name
+        description: Employeeâ€™s name
+        data_type: VARCHAR
+      - name: EMP_address_2
+        description: Second line street address of the employee
+        data_type: VARCHAR
+      - name: soc_sec_number
+        description: Social Security Number
+        data_type: INTEGER
+      - name: salary
+        description: Annual salary paid to the employee
+        data_type: INTEGER
+      - name: EMP_address
+        description: First line of the employeeâ€™s address
+        data_type: VARCHAR
+      - name: email
+        description: email
+        data_type: VARCHAR
+      - name: hire_date
+        description: Employeeâ€™s date of hire at the video store
+        data_type: DATE
+      - name: EMP_phone
+        description: Employeeâ€™s home phone number
+        data_type: INTEGER
+      - name: supervisor
+        description: A unique number that identifies the employee
+        data_type: VARCHAR
+        tests:
+          - not_null
+          - relationships:
+                to: ref('EMP')
+                field: EMP_number
+      - name: store_number
+        description: A unique identifier of the video store
+        data_type: INTEGER
+      - name: EMP_number
+        description: A unique number that identifies the store in which the employee
+            works
+        data_type: VARCHAR
+        tests:
+          - unique
+          - not_null
+  - name: MOVIE
+    description: A MOVIE is any video that can be rentedâ€ for the entity â€œMOVIE
+    columns:
+      - name: movie_number
+        description: A unique number that identifies a movie
+        data_type: INTEGER
+        tests:
+          - unique
+          - not_null
+      - name: movie_director
+        description: Last name of the movieâ€™s director
+        data_type: VARCHAR
+      - name: star_1_name
+        description: Last name of the leading star of the movie
+        data_type: VARCHAR
+      - name: star_2_name
+        description: Last name of the second leading star of the movie
+        data_type: VARCHAR
+      - name: rental_rate
+        description: Amount charged for the rental of a movie
+        data_type: numeric
+      - name: movie_title
+        data_type: VARCHAR
+      - name: genre
+        description: The genre associated with the movie
+        data_type: varchar
+      - name: movie_url
+        description: The location on the internet where the movie clip is stored
+        data_type: varchar
+      - name: description
+        description: A brief description of the movieâ€™s plot or story line
+        data_type: VARCHAR
+      - name: rating
+        description: Rating associated with the movie
+        data_type: varchar
+      - name: movie_clip
+        description: Stored Movie clip
+        data_type: LARGE BINARY
+  - name: STORE
+    description: A STORE is one of the MOVIE STORES where a customer can rent a movie
+    columns:
+      - name: store_number
+        description: A unique identifier of the video store
+        data_type: INTEGER
+        tests:
+          - unique
+          - not_null
+      - name: store_phone
+        description: The storeâ€™s phone number
+        data_type: INTEGER
+      - name: store_state
+        description: The state associated with the storeâ€™s address
+        data_type: VARCHAR
+      - name: store_address
+        description: The first line of the street address of the store
+        data_type: VARCHAR
+      - name: store_manager
+        description: The employee who manages the video store
+        data_type: VARCHAR
+      - name: store_city
+        description: The city associated with the storeâ€™s address
+        data_type: VARCHAR
+      - name: store_zip_code
+        description: The zip code associated with the storeâ€™s address
+        data_type: Integer
+      - name: store_address_2
+        description: The first line of the street address of the store
+        data_type: VARCHAR
+  - name: MOVIE_RENTAL_RECORD
+    description: A MOVIE RENTAL RECORD is a record that  is kept on every MOVIE in
+        the STORE  on who and when a MOVIE is rented
+    columns:
+      - name: rental_date
+        description: The date on which the movie was rented
+        data_type: DATE
+      - name: overdue_charge
+        description: The amount owed for an overdue movie rental
+        data_type: INTEGER
+      - name: movie_number
+        description: A unique number that identifies a movie
+        data_type: INTEGER
+        tests:
+          - unique
+          - not_null
+          - relationships:
+                to: ref('MOVIE_COPY')
+                field: movie_number
+      - name: rental_record_date
+        description: The date on which the rental transaction  is recorded
+        data_type: DATE
+        tests:
+          - unique
+          - not_null
+      - name: soc_sec_number
+        description: Social Security Number
+        data_type: INTEGER
+        tests:
+          - unique
+          - not_null
+          - relationships:
+                to: ref('EMP')
+                field: soc_sec_number
+      - name: rental_status
+        description: Rental status of the movie copy
+        data_type: VARCHAR
+      - name: due_date
+        description: The date on which the  movie is due back to the store
+        data_type: DATE
+      - name: rental_rate
+        description: Amount charged for the rental of a movie
+        data_type: INTEGER
+      - name: EMP_phone
+        description: Employeeâ€™s home phone number
+        data_type: INTEGER
+        tests:
+          - unique
+          - not_null
+          - relationships:
+                to: ref('EMP')
+                field: EMP_phone
+      - name: movie_copy_number
+        description: A unique number  identifying the movie copy
+        data_type: INTEGER
+        tests:
+          - unique
+          - not_null
+          - relationships:
+                to: ref('MOVIE_COPY')
+                field: movie_copy_number
+      - name: CUST_number
+        description: A unique number associated with Customer
+        data_type: INTEGER
+        tests:
+          - unique
+          - not_null
+          - relationships:
+                to: ref('CUST')
+                field: CUST_number
+      - name: payment_transaction_number
+        description: A unique number associated with the payment
+        data_type: INTEGER
+  - name: MOVIE_COPY
+    description: A MOVIE COPY is a single copy of a MOVIE
+    columns:
+      - name: general_condition
+        description: code identifying the general condition of the copy of the movie
+        data_type: VARCHAR
+      - name: movie_copy_number
+        description: A unique number  identifying the movie copy
+        data_type: INTEGER
+        tests:
+          - unique
+          - not_null
+      - name: movie_format
+        description: Defines the format of the movie copy (i.e VHS\, DVD)
+        data_type: VARCHAR
+      - name: movie_number
+        description: A unique number that identifies a movie
+        data_type: INTEGER
+        tests:
+          - unique
+          - not_null
+          - relationships:
+                to: ref('MOVIE')
+                field: movie_number
+  - name: CUST
+    description: A CUSTOMER is a person or organization who has rented a movie within
+        the past year.
+    columns:
+      - name: CUST_number
+        description: A unique number associated with Customer
+        data_type: INTEGER
+        tests:
+          - unique
+          - not_null
+      - name: email
+        description: The email address associated with a customer
+        data_type: varchar
+      - name: CUST_first_name
+        description: First name of a Customer
+        data_type: VARCHAR
+      - name: CUST_state
+        description: The two-character state abbreviation associated with customerâ€™s
+            address
+        data_type: VARCHAR
+      - name: CUST_last_name
+        description: Last name of a Customer
+        data_type: VARCHAR
+      - name: CUST_address
+        description: Street address of the customer
+        data_type: VARCHAR
+      - name: CUST_city
+        description: City associated with Customerâ€™s address
+        data_type: VARCHAR
+      - name: CUST_zip_code
+        description: zip-code associated with Customerâ€™s address
+        data_type: Integer
+  - name: CUST_CREDIT
+    description: CUSTOMER CREDIT is the status of available credit for a CUSTOMER
+    columns:
+      - name: CUST_number
+        description: A unique number associated with Customer
+        data_type: INTEGER
+        tests:
+          - unique
+          - not_null
+      - name: credit_card_exp
+        description: Expiration date on the customerâ€™s credit card
+        data_type: INTEGER
+      - name: credit_card
+        description: A credit card number associated with Customer
+        data_type: INTEGER
+      - name: status_code
+        description: Payment status associated with a Customer
+        data_type: VARCHAR
+  - name: MOVIE_STORE
+    description: A unique number that identifies a movie
+    columns:
+      - name: movie_number
+        description: A unique number that identifies a movie
+        data_type: INTEGER
+        tests:
+          - unique
+          - not_null
+          - relationships:
+                to: ref('MOVIE')
+                field: movie_number
+      - name: store_number
+        description: A unique identifier of the video store
+        data_type: INTEGER
+        tests:
+          - unique
+          - not_null
+          - relationships:
+                to: ref('STORE')
+                field: store_number
+  - name: PAYMENT
+    description: A PAYMENT is received when a customer rents a movie
+    columns:
+      - name: payment_transaction_number
+        description: A unique number associated with the payment
+        data_type: INTEGER
+        tests:
+          - unique
+          - not_null
+      - name: payment_amount
+        description: The amount paid to rent the movie
+        data_type: numeric
+      - name: check_bank_number
+        description: The bank number associated with the check issued for payment
+        data_type: INTEGER
+      - name: epay_vendor_number
+        description: Defines the vendor associated with the customerâ€™s electronic
+            payment
+        data_type: INTEGER
+      - name: credit_card_number
+        description: The number of the customer credit card
+        data_type: char
+      - name: payment_type
+        description: check\, credit card\, e-payment.
+        data_type: char
+      - name: check_number
+        data_type: INTEGER
+      - name: payment_date
+        description: The date on which the movie was rented
+        data_type: DATE
+      - name: epay_account_number
+        description: Defines the customer account associated with the  electronic
+            payment
+        data_type: INTEGER
+      - name: credit_card_exp
+        description: Expiration date on the customerâ€™s credit card
+        data_type: datetime
+      - name: credit_card_type
+        data_type: char
+      - name: EMP_number
+        description: A unique number that identifies the employee
+        data_type: VARCHAR
+        tests:
+          - not_null
+          - relationships:
+                to: ref('EMP')
+                field: EMP_number
+      - name: customer_no
+        description: A unique number associated with a customer
+        data_type: INTEGER
+      - name: payment_status
+        description: The status of the payment
+        data_type: varchar
+      - name: CUST_number
+        description: A unique number associated with a customer
+        data_type: INTEGER
