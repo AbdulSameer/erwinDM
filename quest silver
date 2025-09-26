@@ -7,3 +7,12 @@ CREATE TABLE table
 
 ALTER TABLE table
 	ADD CONSTRAINT XPKtable PRIMARY KEY (gold);
+
+CREATE TABLE table2
+(
+	platinum STRING NOT NULL,
+	copper STRING
+);
+
+ALTER TABLE table2
+	ADD CONSTRAINT XPKtable2 PRIMARY KEY (platinum);
