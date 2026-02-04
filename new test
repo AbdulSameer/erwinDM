@@ -1,0 +1,8 @@
+
+CREATE TABLE E_1162
+(
+	df                   CHAR(18) NOT NULL
+);
+
+ALTER TABLE E_1162
+ADD PRIMARY KEY (df);
